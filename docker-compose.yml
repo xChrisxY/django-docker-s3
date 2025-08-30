@@ -1,0 +1,34 @@
+version: '3.8'
+
+services: 
+    server:
+        build: .
+        command: python app/manage.py runserver 0.0.0.0:8000
+        volumes:
+            - .:/app
+            - media_volume:/app/media # Volumen para imágenes
+        ports:
+            - "8000:8000"
+        env_file:
+            - .env
+        environment:
+            - DEBUG=${DEBUG}
+        depends_on:
+            - db 
+        restart: unless-stopped
+
+    db:
+        image: postgres:15
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_DB=${POSTGRES_DB}
+            - POSTGRES_USER=${POSTGRES_USER} 
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        ports:
+            - "5432:5432"
+        restart: unless-stopped
+        
+volumes:
+    postgres_data:
+    media_volume: # Solo este volumen para media
