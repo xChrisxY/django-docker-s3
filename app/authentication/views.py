@@ -34,7 +34,7 @@ class UserViewSet(viewsets.ModelViewSet):
             profile_serializer = UserProfileSerializer(user)
             return Response(profile_serializer.data, status=status.HTTP_201_CREATED)
 
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated])
     def profile(self, request):
